@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  IMAGE_NAME: secure-app
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -26,11 +29,11 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USER }}/secure-app:latest
+          tags: ${{ secrets.DOCKER_USER }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ secrets.DOCKER_USER }}/secure-app:latest
+          image-ref: ${{ secrets.DOCKER_USER }}/${{ env.IMAGE_NAME }}:latest
           severity: CRITICAL,HIGH
 
